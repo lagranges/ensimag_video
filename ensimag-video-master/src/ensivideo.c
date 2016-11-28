@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include <SDL2/SDL.h>
+#include <pthread.h>
 
 #include "stream_common.h"
 #include "oggstream.h"
@@ -23,17 +24,23 @@ int main(int argc, char *argv[]) {
     assert(res == 0);
     
     // start the two stream readers
-
+//     pthread_create(&theora, NULL, theoraStreamReader, argv[1]);
+//     pthread_create(&vorbis, NULL, vorbisStreamReader, argv[1]);
     
     // wait audio thread
+//     pthread_join(vorbis, &res);
 
     // 1 seconde de garde pour le son,
     sleep(1);
 
     // tuer les deux threads videos si ils sont bloqués
+	
 
     // attendre les 2 threads videos
+//     pthread_join();
+//     pthread_join();
 
     
     exit(EXIT_SUCCESS);    
 }
+	

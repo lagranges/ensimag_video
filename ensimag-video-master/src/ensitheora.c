@@ -18,7 +18,6 @@ struct TextureDate texturedate[NBTEX] = {};
 
 struct streamstate *theorastrstate=NULL;
 
-/* Thread_affichage Gérant l'affichage */
 void *draw2SDL(void *arg) {
     int serial = (int) (long long int) arg;
     struct streamstate *s= NULL;
