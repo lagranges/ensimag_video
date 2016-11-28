@@ -8,19 +8,29 @@
 
 extern bool fini;
 
+/* structure de synchronisation de la texture (producteur-consommateur) */
 typedef struct 
 {
 	pthread_mutex_t mutex; // mutex d'acces au tampon
 	pthread_cond_t cond_prod;
 	pthread_cond_t cond_cons;
 	int nb_cases_pleines;
-	const int NBMAX; // nb de textures 
+	const int NBMAX; // nb de textures (=NBTEX) 
 } texture_prod_cons;
+
+
+typedef struct
+{
+	pthread_mutex_t mutex;
+	pthread_cond_t cond_taille;
+	pthread_cond_t cond_texture;
+} taille_fenetre_texture;
+
 
 /* Les extern des variables pour la synchro ici */
 
-extern pthread_mutex_t mutex;
-extern pthread_cond_t cond;
+// extern pthread_mutex_t mutex;
+// extern pthread_cond_t cond;
 
 /* Fonctions de synchro à implanter */
 
