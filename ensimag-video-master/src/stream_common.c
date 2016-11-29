@@ -7,7 +7,7 @@
 #include "synchro.h"
 
 bool fini = false;
-
+pthread_t thread_theora_affiche;
 
 struct timespec datedebut;
 
@@ -142,10 +142,7 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 	    if (type == TYPE_THEORA) {
 		// lancement du thread gérant l'affichage (draw2SDL)
 	        // inserer votre code ici !!
-// 		pthread_create(&thread_a_definir, NULL, draw2SDL, s->serial);
-
-
-
+		pthread_create(&thread_theora_affiche, NULL, draw2SDL, s->serial);
 
 		assert(res == 0);		     
 	    }

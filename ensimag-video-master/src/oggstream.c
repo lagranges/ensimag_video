@@ -24,7 +24,7 @@ void *theoraStreamReader(void *arg) {
     struct streamstate *s;
     
     while(! fini) {
-      //printf("theora loop\n");// vérifier si le fichier ne serait pas fini
+      	printf("theora loop\n");// vérifier si le fichier ne serait pas fini
 	if ( feof( vf ) ) {
 	    fini = true;
 	    return 0;
