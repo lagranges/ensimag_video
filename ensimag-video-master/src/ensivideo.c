@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     sleep(1);
    
     // tuer les deux threads videos si ils sont bloqués
-    pthread_cancel(thread_theoa_affiche);
+    pthread_cancel(thread_theora_affiche);
     pthread_cancel(thread_theora_decode);
 
     // attendre les 2 threads videos
