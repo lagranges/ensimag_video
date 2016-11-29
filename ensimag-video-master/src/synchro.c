@@ -23,9 +23,9 @@ static texture_prod_cons synchro_texture =
 
 static taille_fenetre_texture synchro_fenetre = 
 {
-	.mutex = PTHREAD_MUTEX_INITIALIZER;
-	.cond_taille = PTHREAD_COND_INITIALIZER;
-	.cond_texture = PTHREAD_COND_INITIALIZER;
+	.mutex = PTHREAD_MUTEX_INITIALIZER,
+	.cond_taille = PTHREAD_COND_INITIALIZER,
+	.cond_texture = PTHREAD_COND_INITIALIZER,
 };
 
 /* l'implantation des fonctions de synchro ici */
@@ -62,7 +62,7 @@ void envoiTailleFenetre(th_ycbcr_buffer buffer) {
 	pthread_mutex_lock(&synchro_fenetre.mutex);
 	windowsx = buffer[0].width; // et pourquoi pas buffer[1], buffer[2] ??
 	windowsy = buffer[0].height;
-	pthread_cond_signal(&synchro_fenetre.cond);
+	pthread_cond_signal(&synchro_fenetre.cond_taille);
 	printf("[ENVOI TAILLE FENETRE] signalé!");
 	pthread_mutex_unlock(&synchro_fenetre.mutex);
 }
@@ -70,7 +70,7 @@ void envoiTailleFenetre(th_ycbcr_buffer buffer) {
 void attendreTailleFenetre() {
 	pthread_mutex_lock(&synchro_fenetre.mutex);
 	while ((windowsx == 0) && (windowsy == 0))
-		pthread_cond_wait(&synchro_fenetre.cond, &synchro_fenetre.mutex);
+		pthread_cond_wait(&synchro_fenetre.cond_taille, &synchro_fenetre.mutex);
 	pthread_mutex_unlock(&synchro_fenetre.mutex);
 }
 
