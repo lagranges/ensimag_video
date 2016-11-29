@@ -142,7 +142,8 @@ int decodeAllHeaders(int respac, struct streamstate *s, enum streamtype type) {
 	    if (type == TYPE_THEORA) {
 		// lancement du thread gérant l'affichage (draw2SDL)
 	        // inserer votre code ici !!
-		pthread_create(&thread_theora_affiche, NULL, draw2SDL, s->serial);
+		pthread_create(&thread_theora_affiche, NULL, draw2SDL, (void*)(intptr_t)(s->serial));
+		// intptr pour contourner le 'cast from integer to pointer of different size'!
 
 		assert(res == 0);		     
 	    }
