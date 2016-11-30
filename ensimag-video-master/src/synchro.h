@@ -8,16 +8,6 @@
 
 extern bool fini;
 
-/* structure de synchronisation de la texture (producteur-consommateur) */
-typedef struct 
-{
-	pthread_mutex_t mutex; // mutex d'acces au tampon
-	pthread_cond_t cond_prod;
-	pthread_cond_t cond_cons;
-	int nb_cases_pleines;
-	const int NBMAX; // nb de textures (=NBTEX) 
-} texture_prod_cons;
-
 typedef struct
 {
 	pthread_mutex_t mutex;
@@ -27,8 +17,16 @@ typedef struct
 
 
 /* Les extern des variables pour la synchro ici */
-extern texture_prod_cons synchro_texture;
-extern taille_fenetre_texture synchro_fenetre;
+extern pthread_cond_t cond_producteur_texture;
+extern pthread_cond_t cond_consommateur_texture;
+extern pthread_cond_t cond_producteur_fenetre;
+extern pthread_cond_t cond_consommateur_fenetre;
+
+extern pthread_mutex_t mutex_texture;
+extern pthread_mutex_t mutex_fenetre;
+extern pthread_mutex_t mutex;
+
+
 
 /* Fonctions de synchro à implanter */
 
@@ -45,3 +43,14 @@ void debutDeposerTexture();
 void finDeposerTexture();
 
 #endif
+
+
+
+// typedef struct 
+// {
+// 	pthread_mutex_t mutex; // mutex d'acces au tampon
+// 	pthread_cond_t cond_prod;
+// 	pthread_cond_t cond_cons;
+// 	int nb_cases_pleines;
+// 	const int NBMAX; // nb de textures (=NBTEX) 
+// } texture_prod_cons;

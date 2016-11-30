@@ -31,7 +31,7 @@ void *draw2SDL(void *arg) {
 			      windowsx,
 			      windowsy,
 			      0);
-    renderer = SDL_CreateRenderer(screen, -1, 0);
+    renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_SOFTWARE);
 	    
     assert(screen);
     assert(renderer);
@@ -56,9 +56,9 @@ void *draw2SDL(void *arg) {
 
     /* Protéger l'accès à la hashmap */
 
-    pthread_mutex_lock(&texture_prod_cons.mutex);
+    pthread_mutex_lock(&mutex);
     HASH_FIND_INT( theorastrstate, &serial, s );
-    pthread_mutex_unlock(&texture_prod_cons.mutex);
+    pthread_mutex_unlock(&mutex);
 
 
 
