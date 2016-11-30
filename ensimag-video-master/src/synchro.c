@@ -57,6 +57,9 @@ void finDeposerTexture() {
 ***********************************************
 ***********************************************
 ***********************************************/
+pthread_mutex_t mutex_affichage = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_hashmap= PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_fenetre_prete= PTHREAD_MUTEX_INITIALIZER;
 
 void envoiTailleFenetre(th_ycbcr_buffer buffer) {
 	pthread_mutex_lock(&synchro_fenetre.mutex);
@@ -75,9 +78,13 @@ void attendreTailleFenetre() {
 }
 
 void signalerFenetreEtTexturePrete() {
+    pthread_mutex_unlock(&mutex_fenetre_prete);
+    pthread_mutex_destroy(&mutex_fenetre_prete);
 }
 
 void attendreFenetreTexture() {
 // 	cond_fenetre_texture.wait();
+    pthread_mutex_lock(&mutex_fenetre_prete);
+    pthread_mutex_unlock(&mutex_fenetre_prete);
 }
 

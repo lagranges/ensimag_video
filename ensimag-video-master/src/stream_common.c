@@ -6,6 +6,7 @@
 #include "stream_common.h"
 #include "synchro.h"
 
+extern pthread_mutex_t mutex_hashmap;
 bool fini = false;
 pthread_t thread_theora_affiche;
 
@@ -18,9 +19,6 @@ int msFromStart() {
     return (int)((now.tv_sec - datedebut.tv_sec)*1000.0 +
 	      (now.tv_nsec - datedebut.tv_nsec)/1000000.0);
 }
-
-extern texture_prod_cons synchro_texture;
-extern taille_fenetre_texture synchro_texture;
 
 
 void pageReader(FILE *vf, ogg_sync_state *pstate, ogg_page *ppage) {
@@ -70,13 +68,12 @@ struct streamstate *getStreamState(ogg_sync_state *pstate, ogg_page *ppage,
 
 	// proteger l'accès à la hashmap
 
-	pthread_mutext_lock(&texture_prod_cons.mutex);
+    pthread_mutex_lock(&mutex_hashmap);
 	if (type == TYPE_THEORA)
 	    HASH_ADD_INT( theorastrstate, serial, s );
 	else
 	    HASH_ADD_INT( vorbisstrstate, serial, s );
-
-	pthread_mutex_unlock(&texture_prod_cons.mutex);
+    pthread_mutex_unlock(&mutex_hashmap);
 
 
 
@@ -85,11 +82,13 @@ struct streamstate *getStreamState(ogg_sync_state *pstate, ogg_page *ppage,
     } else {
 	// proteger l'accès à la hashmap
 
+    pthread_mutex_lock(&mutex_hashmap);
 	if (type == TYPE_THEORA)
 	    HASH_FIND_INT( theorastrstate, & serial, s );
 	else	
 	    HASH_FIND_INT( vorbisstrstate, & serial, s );    
 
+    pthread_mutex_unlock(&mutex_hashmap);
 	assert(s != NULL);
     }
     assert(s != NULL);

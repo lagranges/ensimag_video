@@ -26,9 +26,6 @@ typedef struct
 } taille_fenetre_texture;
 
 
-/* Les extern des variables pour la synchro ici */
-extern texture_prod_cons synchro_texture;
-extern taille_fenetre_texture synchro_fenetre;
 
 /* Fonctions de synchro à implanter */
 

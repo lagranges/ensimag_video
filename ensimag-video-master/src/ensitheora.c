@@ -4,13 +4,16 @@
 #include "ensitheora.h"
 #include "synchro.h"
 #include "stream_common.h"
-
+#include <pthread.h>
 int windowsx = 0;
 int windowsy = 0;
 
 int tex_iaff= 0;
 int tex_iwri= 0;
 
+extern pthread_mutex_t mutex_hashmap;
+extern pthread_mutex_t mutex_afficage;
+extern pthread_mutex_t mutex_fenetre_prete;
 
 static SDL_Window *screen = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -24,6 +27,7 @@ void *draw2SDL(void *arg) {
 
     attendreTailleFenetre();
     
+    printf("entrer affichage "); 
     // create SDL window (if not done) and renderer
     screen = SDL_CreateWindow("Ensimag lecteur ogg/theora/vorbis",
 			      SDL_WINDOWPOS_UNDEFINED,
@@ -56,9 +60,9 @@ void *draw2SDL(void *arg) {
 
     /* Protéger l'accès à la hashmap */
 
-    pthread_mutex_lock(&texture_prod_cons.mutex);
+    pthread_mutex_lock(&mutex_hashmap);
     HASH_FIND_INT( theorastrstate, &serial, s );
-    pthread_mutex_unlock(&texture_prod_cons.mutex);
+    pthread_mutex_unlock(&mutex_hashmap);
 
 
 
@@ -118,6 +122,8 @@ void theora2SDL(struct streamstate *s) {
     // Envoyer la taille de la fenêtre
     envoiTailleFenetre(buffer);
     
+    pthread_mutex_lock(&mutex_fenetre_prete);
+     
     attendreFenetreTexture();
 
     // copy the buffer
