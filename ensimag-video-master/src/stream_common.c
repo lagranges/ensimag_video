@@ -19,6 +19,9 @@ int msFromStart() {
 	      (now.tv_nsec - datedebut.tv_nsec)/1000000.0);
 }
 
+extern texture_prod_cons synchro_texture;
+extern taille_fenetre_texture synchro_texture;
+
 
 void pageReader(FILE *vf, ogg_sync_state *pstate, ogg_page *ppage) {
     // lire une page theora
@@ -67,10 +70,17 @@ struct streamstate *getStreamState(ogg_sync_state *pstate, ogg_page *ppage,
 
 	// proteger l'accès à la hashmap
 
+	pthread_mutext_lock(&texture_prod_cons.mutex);
 	if (type == TYPE_THEORA)
 	    HASH_ADD_INT( theorastrstate, serial, s );
 	else
 	    HASH_ADD_INT( vorbisstrstate, serial, s );
+
+	pthread_mutex_unlock(&texture_prod_cons.mutex);
+
+
+
+
 
     } else {
 	// proteger l'accès à la hashmap

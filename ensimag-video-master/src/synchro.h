@@ -18,7 +18,6 @@ typedef struct
 	const int NBMAX; // nb de textures (=NBTEX) 
 } texture_prod_cons;
 
-
 typedef struct
 {
 	pthread_mutex_t mutex;
@@ -28,9 +27,8 @@ typedef struct
 
 
 /* Les extern des variables pour la synchro ici */
-
-// extern pthread_mutex_t mutex;
-// extern pthread_cond_t cond;
+extern texture_prod_cons synchro_texture;
+extern taille_fenetre_texture synchro_fenetre;
 
 /* Fonctions de synchro à implanter */
 

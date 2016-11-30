@@ -56,7 +56,9 @@ void *draw2SDL(void *arg) {
 
     /* Protéger l'accès à la hashmap */
 
+    pthread_mutex_lock(&texture_prod_cons.mutex);
     HASH_FIND_INT( theorastrstate, &serial, s );
+    pthread_mutex_unlock(&texture_prod_cons.mutex);
 
 
 
